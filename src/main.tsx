@@ -40,9 +40,8 @@ const loadHackerNewsData = async () => {
 
 	const storiesToString: any = stories.map((story,index) => {
 		const {title, url, score, by, kids} = story;
-		return `${index}. [${title}](${url}) [:small.opacity-50 "🔥 ${score} 💬 ${kids?.length}"]
-		collapsed:: true    
-		> ${title}`
+		return `${index}. [${title}](${url}) [:small.opacity-50 "🔥 ${score} 💬 ${kids?.length}"]`;
+		
 	})
 
 
@@ -83,13 +82,13 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 				console.log(pageBlockTree[0]);	
 				let targetBlock = pageBlockTree[0]!;
 
+				
 				let blocks: any = await loadHackerNewsData();
 				console.log(blocks);
-
+				
 				const blocksInContent= blocks.map((it: any) => ({ content: it }))
-
 				await logseq.Editor.insertBatchBlock(targetBlock.uuid, blocksInContent, {
-				sibling: false
+				sibling: false, before: false
 				})
 
 				await logseq.Editor.updateBlock(targetBlock.uuid, `## 🔖 HackerNews - ${blockTitle}`)
