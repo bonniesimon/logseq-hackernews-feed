@@ -80,18 +80,22 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 
 				const pageBlockTree = await logseq.Editor.getCurrentPageBlocksTree();
 				console.log(pageBlockTree[0]);	
-				let targetBlock = pageBlockTree[0]!;
+				let previousBlock = pageBlockTree[0]!;
 
 				
-				let blocks: any = await loadHackerNewsData();
-				console.log(blocks);
+				let hackerNewsData: any = await loadHackerNewsData();
+				console.log(hackerNewsData);
+
+				// Insert new block as sibling of the first block
+				// Then insertBatchBlock into the new block
+				// Remove the initial block
 				
-				const blocksInContent= blocks.map((it: any) => ({ content: it }))
-				await logseq.Editor.insertBatchBlock(targetBlock.uuid, blocksInContent, {
+				const hackerNewsDataInBlockFormat = hackerNewsData.map((it: any) => ({ content: it }))
+				await logseq.Editor.insertBatchBlock(previousBlock.uuid, hackerNewsDataInBlockFormat, {
 				sibling: false, before: false
 				})
 
-				await logseq.Editor.updateBlock(targetBlock.uuid, `## 🔖 HackerNews - ${blockTitle}`)
+				await logseq.Editor.updateBlock(previousBlock.uuid, `## 🔖 HackerNews - ${blockTitle}`)
 			}
 			catch(e: any){
 				logseq.App.showMsg(e.toString(), 'warning');
