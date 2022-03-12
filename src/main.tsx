@@ -67,7 +67,7 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 			const pageName: string = "hackernews-logseq-feed";
 			const blockTitle: string = (new Date()).toLocaleString()
 
-			logseq.App.pushState('page', {name: pageName});
+			await logseq.Editor.createPage(pageName, {redirect: true, createFirstBlock: true});
 
 			await delay(300);
 
