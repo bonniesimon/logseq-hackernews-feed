@@ -82,13 +82,24 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 				const pageBlockTree = await logseq.Editor.getCurrentPageBlocksTree();
 				console.log(pageBlockTree[0]);	
 				let targetBlock = pageBlockTree[0]!;
+
+				let blocks: any = await loadHackerNewsData();
+				console.log(blocks);
+
+				const blocksInContent= blocks.map((it: any) => ({ content: it }))
+
+				await logseq.Editor.insertBatchBlock(targetBlock.uuid, blocksInContent, {
+				sibling: false
+				})
+
+				await logseq.Editor.updateBlock(targetBlock.uuid, `## 🔖 HackerNews - ${blockTitle}`)
 			}
 			catch(e: any){
 				logseq.App.showMsg(e.toString(), 'warning');
-				console.error(e);
+				console.log(e);
 			}
 			finally{
-
+				loading = false;
 			}
 		}
 	 });
