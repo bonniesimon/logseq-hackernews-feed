@@ -1,4 +1,5 @@
 import "@logseq/libs";
+import { LSPluginBaseInfo } from '@logseq/libs/dist/LSPlugin';
 import "virtual:windi.css";
 
 import React from "react";
@@ -13,7 +14,11 @@ const magicKey = `__${PL.id}__loaded__`;
 
 const isDev = process.env.NODE_ENV === "development";
 
-function main() {
+const loadHackerNews = async () => {
+  
+}
+
+const main = (baseInfo: LSPluginBaseInfo) => {
   const pluginId = logseq.baseInfo.id;
   console.info(`#${pluginId}: MAIN`);
   ReactDOM.render(
@@ -23,9 +28,29 @@ function main() {
     document.getElementById("app")
   );
 
+  logseq.provideModel({loadHackerNews});
+
 	logseq.Editor.registerSlashCommand('Random sheet', async () => {
-		console.log("Wowwww it works");
+		console.log("cow it works");
 	});
+
+
+  logseq.App.registerUIItem('toolbar', {
+    key: 'logseq-reddit',
+    template: `
+      <a data-on-click="loadHackerNews"
+         class="button">
+        <i class="ti ti-rss"></i>
+      </a>
+    `
+  })
+
+  logseq.provideStyle(`
+    [data-injected-ui=logseq-reddit-${baseInfo.id}] {
+      display: flex;
+      align-items: center;
+    }
+  `)
   
 }
 
