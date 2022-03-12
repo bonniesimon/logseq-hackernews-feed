@@ -21,3 +21,7 @@ To build
 ```bash
 pnpm build
 ```
+
+## Things to keep in mind
+
+Reload the plugin after each reload (save in vscode when pnpm dev is running)
