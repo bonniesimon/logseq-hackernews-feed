@@ -14,7 +14,7 @@ const magicKey = `__${PL.id}__loaded__`;
 
 const isDev = process.env.NODE_ENV === "development";
 
-const loadHackerNews = async () => {};
+const delay = (t = 100) => new Promise(r => setTimeout(r, t));
 
 const main = (baseInfo: LSPluginBaseInfo) => {
     const pluginId = logseq.baseInfo.id;
@@ -26,7 +26,39 @@ const main = (baseInfo: LSPluginBaseInfo) => {
         document.getElementById("app")
     );
 
-    logseq.provideModel({ loadHackerNews });
+	let loading: boolean = false;
+    logseq.provideModel({ 
+		async loadHackerNews(){
+			const info = await logseq.App.getUserConfigs();
+			if(loading) return;
+
+			const pageName: string = "hackernews-logseq-feed";
+			const blockTitle: string = (new Date()).toLocaleString()
+
+			logseq.App.pushState('page', {name: pageName});
+
+			await delay(300);
+
+			loading = true;
+
+			try {
+				const currentPage = await logseq.Editor.getCurrentPage();
+				
+				if(currentPage?.originalName !== pageName) throw new Error('page error');
+
+				const pageBlockTree = await logseq.Editor.getCurrentPageBlocksTree();
+				console.log(pageBlockTree[0]);	
+				let targetBlock = pageBlockTree[0]!;
+			}
+			catch(e: any){
+				logseq.App.showMsg(e.toString(), 'warning');
+				console.error(e);
+			}
+			finally{
+
+			}
+		}
+	 });
 
     logseq.Editor.registerSlashCommand("Random sheet", async () => {
         console.log("cow it works");
