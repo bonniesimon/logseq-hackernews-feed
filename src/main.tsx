@@ -47,9 +47,6 @@ const loadHackerNewsData = async () => {
 	return storiesToString;
 }
 
-const updateChildBlocks = (childUUID: any) => {
-
-}
 
 const main = (baseInfo: LSPluginBaseInfo) => {
     const pluginId = logseq.baseInfo.id;
