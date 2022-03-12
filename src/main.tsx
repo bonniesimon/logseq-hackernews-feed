@@ -26,7 +26,6 @@ const loadHackerNewsData = async () => {
 	const res = await fetch(topStoriesEndpoint);
 	const topStoryIDs500: number[] = await res.json();
 	const topStoryIDs = topStoryIDs500.slice(0, 21);
-	console.log(topStoryIDs);
 
 	let storyEndpoint: string;
 	const storiesPromises: any = topStoryIDs.map(async (topStoryID) => {
@@ -46,6 +45,10 @@ const loadHackerNewsData = async () => {
 
 
 	return storiesToString;
+}
+
+const updateChildBlocks = (childUUID: any) => {
+
 }
 
 const main = (baseInfo: LSPluginBaseInfo) => {
@@ -74,28 +77,30 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 			loading = true;
 
 			try {
+				let hackerNewsData: any = await loadHackerNewsData();
+				// console.log(hackerNewsData);
+
 				const currentPage = await logseq.Editor.getCurrentPage();
-				
 				if(currentPage?.originalName !== pageName) throw new Error('page error');
 
 				const pageBlockTree = await logseq.Editor.getCurrentPageBlocksTree();
-				console.log(pageBlockTree[0]);	
+				// console.log(pageBlockTree[0]);	
 				let previousBlock = pageBlockTree[0]!;
 
 				
-				let hackerNewsData: any = await loadHackerNewsData();
-				console.log(hackerNewsData);
 
-				// Insert new block as sibling of the first block
-				// Then insertBatchBlock into the new block
-				// Remove the initial block
+
+				const newBlock = await logseq.Editor.insertBlock(previousBlock.uuid, `## 🔖 HackerNews - ${blockTitle}`, {before: true, sibling: false});
 				
-				const hackerNewsDataInBlockFormat = hackerNewsData.map((it: any) => ({ content: it }))
-				await logseq.Editor.insertBatchBlock(previousBlock.uuid, hackerNewsDataInBlockFormat, {
-				sibling: false, before: false
-				})
-
-				await logseq.Editor.updateBlock(previousBlock.uuid, `## 🔖 HackerNews - ${blockTitle}`)
+				if(newBlock){
+					const hackerNewsDataInBlockFormat = hackerNewsData.map((it: any) => ({ content: it }))
+					await logseq.Editor.insertBatchBlock(newBlock.uuid, hackerNewsDataInBlockFormat, {
+					sibling: false, before: false
+					})
+				}
+				
+				
+				await logseq.Editor.removeBlock(previousBlock.uuid);	
 			}
 			catch(e: any){
 				logseq.App.showMsg(e.toString(), 'warning');
