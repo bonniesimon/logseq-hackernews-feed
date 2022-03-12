@@ -88,6 +88,7 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 
 
 				const newBlock = await logseq.Editor.insertBlock(previousBlock.uuid, `## 🔖 HackerNews - ${blockTitle}`, {before: true, sibling: false});
+				await logseq.Editor.removeBlock(previousBlock.uuid);	
 				
 				if(newBlock){
 					const hackerNewsDataInBlockFormat = hackerNewsData.map((it: any) => ({ content: it }))
@@ -97,7 +98,6 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 				}
 				
 				
-				await logseq.Editor.removeBlock(previousBlock.uuid);	
 			}
 			catch(e: any){
 				logseq.App.showMsg(e.toString(), 'warning');
