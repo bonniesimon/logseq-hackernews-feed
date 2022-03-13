@@ -37,11 +37,15 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 			const pageName: string = "hackernews-logseq-feed";
 			const blockTitle: string = (new Date()).toLocaleString()
 
+			const currentPage = await logseq.Editor.getCurrentPage();
+
 			const isPageExists = await logseq.Editor.getPage(pageName);
-			if(isPageExists){
+			if((currentPage?.originalName !== pageName) && isPageExists){
 				await logseq.App.pushState('page', {name: pageName});
-			}else{
+			}else if((currentPage?.originalName !== pageName)){
 				await logseq.Editor.createPage(pageName, {redirect: true, createFirstBlock: true});
+			}else{
+				// pass
 			}
 
 
@@ -53,7 +57,6 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 				let hackerNewsData: any = await loadHackerNewsData();
 				// console.log(hackerNewsData);
 
-				const currentPage = await logseq.Editor.getCurrentPage();
 				if(currentPage?.originalName !== pageName) throw new Error('page error');
 
 				const pageBlockTree = await logseq.Editor.getCurrentPageBlocksTree();
