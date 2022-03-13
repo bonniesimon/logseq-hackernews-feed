@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMountedState } from "react-use";
 
-export const useAppVisible = () => {
+const useAppVisible = () => {
   const [visible, setVisible] = useState(logseq.isMainUIVisible);
   const isMounted = useMountedState();
   React.useEffect(() => {
@@ -19,7 +19,7 @@ export const useAppVisible = () => {
   return visible;
 };
 
-export const useSidebarVisible = () => {
+const useSidebarVisible = () => {
   const [visible, setVisible] = useState(false);
   const isMounted = useMountedState();
   React.useEffect(() => {
@@ -63,4 +63,4 @@ const loadHackerNewsData = async () => {
 }
 
 
-export {loadHackerNewsData};
+export {loadHackerNewsData, useAppVisible, useSidebarVisible};
