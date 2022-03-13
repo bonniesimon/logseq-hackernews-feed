@@ -37,7 +37,13 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 			const pageName: string = "hackernews-logseq-feed";
 			const blockTitle: string = (new Date()).toLocaleString()
 
-			await logseq.Editor.createPage(pageName, {redirect: true, createFirstBlock: true});
+			const isPageExists = await logseq.Editor.getPage(pageName);
+			if(isPageExists){
+				await logseq.App.pushState('page', {name: pageName});
+			}else{
+				await logseq.Editor.createPage(pageName, {redirect: true, createFirstBlock: true});
+			}
+
 
 			await delay(300);
 
