@@ -48,12 +48,24 @@ const main = (baseInfo: LSPluginBaseInfo) => {
 				// pass
 			}
 
+			const currentPageBlockTree = await logseq.Editor.getCurrentPageBlocksTree();
 
 			await delay(300);
 
 			loading = true;
 
 			try {
+				if(currentPageBlockTree.length > 1){
+					for(let i: number = 0; i < currentPageBlockTree.length; i++){
+						if(i == 0) continue;
+						await logseq.Editor.removeBlock(currentPageBlockTree[i].uuid);
+					}	
+				}
+				
+				
+
+
+				
 				let hackerNewsData: any = await loadHackerNewsData();
 				// console.log(hackerNewsData);
 				const currentPage = await logseq.Editor.getCurrentPage();
