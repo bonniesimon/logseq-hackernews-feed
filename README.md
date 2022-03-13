@@ -1,3 +1,4 @@
+🚩WIP (Not stable yet)
 # Logseq Hackernews Feed Plugin
 I open hackernews and logseq multiple times a day. Then why not combine them together. That was my thought process.  
 
