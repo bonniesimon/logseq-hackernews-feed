@@ -1,8 +1,16 @@
 🚩WIP (Not stable yet)
 # Logseq Hackernews Feed Plugin
+Get the latest hackernews top stories inside Logseq.  
+Just click on the icon on the top right tool bar. It opens a page called "hackernews-logseq-feed" where the latest 20 top stories are displayed.  
+![Demo](demo.gif)
+Note:  
+When doing the above for the first time, if it returns a "page error" then simply manually create the hackernews-logseq-feed page and create one block inside the page. Then click on the icon on the top right tool bar.  
+
+
+## Motivation
 I open hackernews and logseq multiple times a day. Then why not combine them together. That was my thought process.  
 
-## Setup
+## Development Setup
 The project uses `pnpm` instead of `yarn` or `npm`.  
 Install `pnpm` if you don't have it  
 ```bash
@@ -24,9 +32,10 @@ To build
 pnpm build
 ```
 
-## Things to keep in mind
+NOTE:  
+Reload the plugin after each change in code (For eg: when pnpm dev is running and you make a change in code and save it, you should reload the plugin)  
+`t p` - shortcut to open the plugin page in logseq (saves you a few extra clicks)
 
-Reload the plugin after each reload (save in vscode when pnpm dev is running)
 
 
 
